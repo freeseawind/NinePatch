@@ -3,16 +3,18 @@ package javafx;
 
 import freeseawind.ninepatch.javafx.FxNinePatch;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author wallace
+ *
+ */
 public class JavaFxTest extends Application
 {
 
