@@ -31,7 +31,6 @@ public abstract class AbstractNinePatch<T, E>
         countPatch(image);
     }
 
-
     /**
      *
      * @param image
@@ -195,62 +194,6 @@ public abstract class AbstractNinePatch<T, E>
         {
             translate(g2d, -x, -y);
         }
-    }
-
-    /**
-     * 计算点九图片信息
-     * <p>|1|   2  |3|</p>
-     * <p>|4|   5  |6|</p>
-     * <p>|7|   8  |9|</p>
-     *  计算图片中每一行里的固定区域、垂直拉伸区、水平拉伸区和平铺区域以及内容显示间距
-     * @param image
-     * @return NinePatchInfo
-     */
-    public void countPatch(T image)
-    {
-        // 图片实际宽度, 不包含左右控制区域
-        int width = getImageWidth(image) - 2;
-
-        // 图片实际高度, 不包含上下控制区域
-        int height = getImageHeight(image) - 2;
-
-        // 行
-        int[] row = null;
-
-        // 列
-        int[] column = null;
-
-        // 获取左侧拉伸区域的像素
-        column = getPixels(image, 0, 1, 1, height);
-
-        // 获取左侧垂直列
-        NinePatchRegion left = getPatches(column);
-
-        // 获取顶部拉伸区域的像素值, 不包含左右控制区域，所以向右偏移一个像素
-        row = getPixels(image, 1, 0, width, 1);
-
-        // 获取顶部水平行
-        NinePatchRegion top = getPatches(row);
-
-        // 水平拉伸区域素数量
-        this.horizontalPatchNum = top.getPatchRegions().size();
-
-        // 垂直拉伸区域数量
-        this.verticalPatchNum = left.getPatchRegions().size();
-
-        this.columns = countColumn(top, left);
-
-        // 获取底部水平内容拉伸区域像素集合
-        row = getPixels(image, 1, height + 1, width, 1);
-
-        // 获取右侧垂直内容拉伸区域像素集合
-        column = getPixels(image, width + 1, 1, 1, height);
-
-        NinePatchRegion bottom = getPatches(row);
-
-        NinePatchRegion right = getPatches(column);
-
-        this.padding = getPadding(width, height, bottom.getPatchRegions(), right.getPatchRegions());
     }
 
     public List<List<Row>> countColumn(NinePatchRegion xRegions, NinePatchRegion yRegions)
@@ -426,6 +369,62 @@ public abstract class AbstractNinePatch<T, E>
         }
 
         return new NinePatchRegion(fixArea, patchArea);
+    }
+    
+    /**
+     * 计算点九图片信息
+     * <p>|1|   2  |3|</p>
+     * <p>|4|   5  |6|</p>
+     * <p>|7|   8  |9|</p>
+     *  计算图片中每一行里的固定区域、垂直拉伸区、水平拉伸区和平铺区域以及内容显示间距
+     * @param image
+     * @return NinePatchInfo
+     */
+    protected void countPatch(T image)
+    {
+        // 图片实际宽度, 不包含左右控制区域
+        int width = getImageWidth(image) - 2;
+
+        // 图片实际高度, 不包含上下控制区域
+        int height = getImageHeight(image) - 2;
+
+        // 行
+        int[] row = null;
+
+        // 列
+        int[] column = null;
+
+        // 获取左侧拉伸区域的像素
+        column = getPixels(image, 0, 1, 1, height);
+
+        // 获取左侧垂直列
+        NinePatchRegion left = getPatches(column);
+
+        // 获取顶部拉伸区域的像素值, 不包含左右控制区域，所以向右偏移一个像素
+        row = getPixels(image, 1, 0, width, 1);
+
+        // 获取顶部水平行
+        NinePatchRegion top = getPatches(row);
+
+        // 水平拉伸区域素数量
+        this.horizontalPatchNum = top.getPatchRegions().size();
+
+        // 垂直拉伸区域数量
+        this.verticalPatchNum = left.getPatchRegions().size();
+
+        this.columns = countColumn(top, left);
+
+        // 获取底部水平内容拉伸区域像素集合
+        row = getPixels(image, 1, height + 1, width, 1);
+
+        // 获取右侧垂直内容拉伸区域像素集合
+        column = getPixels(image, width + 1, 1, 1, height);
+
+        NinePatchRegion bottom = getPatches(row);
+
+        NinePatchRegion right = getPatches(column);
+
+        this.padding = getPadding(width, height, bottom.getPatchRegions(), right.getPatchRegions());
     }
 
     /**
