@@ -12,7 +12,20 @@ Canvas canvas = new Canvas(480, 360);
 GraphicsContext gc = canvas.getGraphicsContext2D();
 Image img = new Image(getClass().getResource("/icon_qipao.9.png").toExternalForm());
 FxNinePatch np = new FxNinePatch(img);
-np.drawNinePatch(img, gc, 28, 28, 400, 100);
+np.drawNinePatch(gc, 28, 28, 400, 100);
+```
+## Swing使用示例
+```Java
+
+final SwingNinePatch np = new SwingNinePatch(img);
+
+// 重写绘图方法
+protected void paintComponent(Graphics g)
+{
+	super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D)g;
+    np.drawNinePatch(g2d, 28, 28, 200, 200);
+}
 ```
 ## 运行效果
 ![](https://raw.githubusercontent.com/freeseawind/NinePatch/master/doc/images/3.png)
