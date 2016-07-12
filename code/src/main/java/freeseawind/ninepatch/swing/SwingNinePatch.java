@@ -1,6 +1,10 @@
 package freeseawind.ninepatch.swing;
 
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
@@ -8,7 +12,25 @@ import freeseawind.ninepatch.common.AbstractNinePatch;
 
 public class SwingNinePatch extends AbstractNinePatch<BufferedImage, Graphics2D>
 {
-    public SwingNinePatch(BufferedImage image)
+    @Override
+	protected BufferedImage toCompatibleImage(BufferedImage image)
+	{
+    	GraphicsDevice device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    	
+    	GraphicsConfiguration config = device.getDefaultConfiguration();
+    	
+    	BufferedImage bufImg = config.createCompatibleImage(image.getWidth(), image.getHeight(), Transparency.TRANSLUCENT);
+    	
+        Graphics2D g2d = bufImg.createGraphics();
+        
+        g2d.drawImage(image, 0, 0, null);
+        
+        g2d.dispose();
+        
+        return bufImg;
+	}
+
+	public SwingNinePatch(BufferedImage image)
     {
         super(image);
     }

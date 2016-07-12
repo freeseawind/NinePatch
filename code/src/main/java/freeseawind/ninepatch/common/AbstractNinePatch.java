@@ -25,32 +25,33 @@ public abstract class AbstractNinePatch<T, E>
     private int verticalPatchNum;
     private List<List<Row>> columns;
     private Padding padding;
+    private T image;
 
     public AbstractNinePatch(T image)
     {
+    	image = toCompatibleImage(image);
+    	
         countPatch(image);
+        
+        this.image = image;
     }
 
     /**
      *
-     * @param image
      * @param g2d
      * @param x
      * @param y
      * @param scaledWidth
      * @param scaledHeight
      */
-    public void drawNinePatch(T image,
-                              E g2d,
-                              int x,
-                              int y,
-                              int scaledWidth,
-                              int scaledHeight)
-    {
-        if(scaledWidth <= 1 || scaledHeight <= 1)
-        {
-            return;
-        }
+	public void drawNinePatch(E g2d, int x, int y, int scaledWidth, int scaledHeight)
+	{
+		// 修复BUG防止拉伸大小小于等于原图大小
+		if (scaledWidth <= 1 || scaledHeight <= 1 || scaledWidth <= getImageWidth(image)
+		        || scaledHeight <= getImageHeight(image))
+		{
+			return;
+		}
 
         try
         {
@@ -238,7 +239,8 @@ public abstract class AbstractNinePatch<T, E>
      * 计算点九图的每一列区域
      * @param yRegion
      * @param xRegions
-     * @param isPatchY y
+     * @param isPatchY
+     * @return 返回当前行
      */
     public List<Row> countRow(Region yRegion, NinePatchRegion xRegions, boolean isPatchY)
     {
@@ -294,8 +296,10 @@ public abstract class AbstractNinePatch<T, E>
 
     /**
      * 获取内容显示区域的间距
-     * @param bottomRegions
-     * @param rightRegions
+     * @param w 内容面板的宽度
+     * @param h 内容面板的高度
+     * @param xRegions x坐标集合
+     * @param yRegions y坐标集合
      * @return
      */
     public Padding getPadding(int w, int h, List<Region> xRegions, List<Region> yRegions)
@@ -313,7 +317,7 @@ public abstract class AbstractNinePatch<T, E>
 
     /**
      * 根据像素值集合计算当前像素区域中的固定区域和拉伸区域
-     * @param pixes 需要查找的像素集合
+     * @param pixels 需要查找的像素集合
      * @return
      */
     public NinePatchRegion getPatches(int[] pixels)
@@ -378,7 +382,6 @@ public abstract class AbstractNinePatch<T, E>
      * <p>|7|   8  |9|</p>
      *  计算图片中每一行里的固定区域、垂直拉伸区、水平拉伸区和平铺区域以及内容显示间距
      * @param image
-     * @return NinePatchInfo
      */
     protected void countPatch(T image)
     {
@@ -425,6 +428,11 @@ public abstract class AbstractNinePatch<T, E>
         NinePatchRegion right = getPatches(column);
 
         this.padding = getPadding(width, height, bottom.getPatchRegions(), right.getPatchRegions());
+    }
+    
+    protected T toCompatibleImage(T image)
+    {
+    	return image;
     }
 
     /**

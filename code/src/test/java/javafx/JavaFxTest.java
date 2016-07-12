@@ -41,7 +41,7 @@ public class JavaFxTest extends Application
 
         FxNinePatch np = new FxNinePatch(img);
         
-        np.drawNinePatch(img, gc, 28, 28, 400, 100);
+        np.drawNinePatch(gc, 28, 28, 400, 100);
 
         root.getChildren().add(canvas);
 

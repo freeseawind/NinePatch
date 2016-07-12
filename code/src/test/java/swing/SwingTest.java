@@ -24,7 +24,7 @@ public class SwingTest
             {
                 try
                 {
-                	InputStream input = SwingTest.class.getResourceAsStream("/bg_bubble@2x.9.png");
+                	InputStream input = SwingTest.class.getResourceAsStream("/frame_shadow_border4.9.png");
                 	
                     final BufferedImage img = ImageIO.read(input);
 
@@ -45,7 +45,7 @@ public class SwingTest
 
                             Graphics2D g2d = (Graphics2D)g;
 
-                            np.drawNinePatch(img, g2d, 28, 28, 100, 100);
+                            np.drawNinePatch(g2d, 28, 28, 200, 200);
                         }
                     });
 
