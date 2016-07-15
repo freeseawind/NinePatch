@@ -529,7 +529,8 @@ public abstract class AbstractNinePatch<T, E>
                     patchWidth -= row.getRectangle().width;
                 }
 
-                if(isNewColumn)
+                //BUG FIX: 修复显示区域计算问题
+                if(Type.FIX == row.getType() && isNewColumn)
                 {
                     patchHeight -= row.getRectangle().height;
 
