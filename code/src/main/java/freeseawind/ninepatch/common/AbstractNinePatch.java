@@ -46,12 +46,18 @@ public abstract class AbstractNinePatch<T, E>
      */
 	public void drawNinePatch(E g2d, int x, int y, int scaledWidth, int scaledHeight)
 	{
+	    // 图片实际宽度
+        int imageWidth = getImageWidth(image) - horizontalPatchNum - 1;
+        
+        // 图片实际高度
+        int imageHeight = getImageHeight(image) - verticalPatchNum - 1;
+	    
 		// 修复BUG防止拉伸大小小于等于原图大小
-		if (scaledWidth <= 1 || scaledHeight <= 1 || scaledWidth <= getImageWidth(image)
-		        || scaledHeight <= getImageHeight(image))
-		{
-			return;
-		}
+        if (scaledWidth <= 1 || scaledHeight <= 1 || scaledWidth < imageWidth
+                || scaledHeight < imageHeight)
+        {
+            return;
+        }
 
         try
         {
