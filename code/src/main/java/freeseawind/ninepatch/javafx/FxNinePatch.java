@@ -3,6 +3,7 @@ package freeseawind.ninepatch.javafx;
 import java.nio.IntBuffer;
 
 import freeseawind.ninepatch.common.AbstractNinePatch;
+import freeseawind.ninepatch.common.RepeatType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelFormat;
@@ -18,9 +19,13 @@ public class FxNinePatch extends AbstractNinePatch<Image, GraphicsContext>
 {
     public FxNinePatch(Image image)
     {
-        super(image);
+        super(image, null);
     }
 
+    public FxNinePatch(Image image, RepeatType repeatType)
+    {
+        super(image, repeatType);
+    }
 
     @Override
     public int[] getPixels(Image img, int x, int y, int w, int h)

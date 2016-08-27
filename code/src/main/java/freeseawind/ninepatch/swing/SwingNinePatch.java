@@ -9,9 +9,20 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 
 import freeseawind.ninepatch.common.AbstractNinePatch;
+import freeseawind.ninepatch.common.RepeatType;
 
 public class SwingNinePatch extends AbstractNinePatch<BufferedImage, Graphics2D>
 {
+    public SwingNinePatch(BufferedImage image)
+    {
+        super(image);
+    }
+    
+    public SwingNinePatch(BufferedImage image, RepeatType repeatType)
+    {
+        super(image, repeatType);
+    }
+
     @Override
 	protected BufferedImage toCompatibleImage(BufferedImage image)
 	{
@@ -29,11 +40,6 @@ public class SwingNinePatch extends AbstractNinePatch<BufferedImage, Graphics2D>
         
         return bufImg;
 	}
-
-	public SwingNinePatch(BufferedImage image)
-    {
-        super(image);
-    }
 
     @Override
     public int[] getPixels(BufferedImage img, int x, int y, int w, int h)

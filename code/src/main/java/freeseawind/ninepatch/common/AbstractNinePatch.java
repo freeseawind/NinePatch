@@ -26,14 +26,22 @@ public abstract class AbstractNinePatch<T, E>
     private List<List<Row>> columns;
     private Padding padding;
     private T image;
+    private RepeatType repeatType;
 
     public AbstractNinePatch(T image)
     {
-    	image = toCompatibleImage(image);
-    	
+        this(image, null);
+    }
+    
+    public AbstractNinePatch(T image, RepeatType repeatType)
+    {
+        image = toCompatibleImage(image);
+        
         countPatch(image);
         
         this.image = image;
+        
+        this.repeatType = repeatType;
     }
 
     /**
@@ -181,7 +189,14 @@ public abstract class AbstractNinePatch<T, E>
                     else if(Type.TILEPATCH == row.getType())
                     {
                         // 平铺
-                        drawImage(g2d, image, rect.x, rect.y, rect.width, rect.height, startX, startY, width, height);
+                        if(repeatType != null)
+                        {
+                            repeatImage(g2d, image, rect.x, rect.y, rect.width, rect.height, startX, startY, width, height);
+                        }
+                        else
+                        {
+                            drawImage(g2d, image, rect.x, rect.y, rect.width, rect.height, startX, startY, width, height);
+                        }
 
                         startX += width;
 
@@ -379,6 +394,79 @@ public abstract class AbstractNinePatch<T, E>
         }
 
         return new NinePatchRegion(fixArea, patchArea);
+    }
+    
+    /**
+     * 平铺图片
+     * @param g2d
+     * @param image
+     * @param x
+     * @param y
+     * @param sw
+     * @param sh
+     * @param dx
+     * @param dy
+     * @param dw
+     * @param dh
+     */
+    public void repeatImage(E g2d,
+                            T image,
+                            int x,
+                            int y,
+                            int sw,
+                            int sh,
+                            int dx,
+                            int dy,
+                            int dw,
+                            int dh)
+    {
+        if (repeatType == null)
+        {
+            return;
+        }
+
+        if (repeatType == RepeatType.HORIZONTAL)
+        {
+            int hornaizeW = dw;
+
+            // Ë®Æ½À­Éì
+            do
+            {
+                if (hornaizeW - sw < 0)
+                {
+                    sw = hornaizeW;
+                }
+
+                hornaizeW -= sw;
+
+                drawImage(g2d, image, x, y, sw, sh, dx, dy, sw, dh);
+
+                dx += sw;
+
+            }
+            while (hornaizeW > 0);
+        }
+        else if (repeatType == RepeatType.VERTICAL)
+        {
+            int verticalH = dh;
+
+            // Ë®Æ½À­Éì
+            do
+            {
+                if (verticalH - sh < 0)
+                {
+                    sh = verticalH;
+                }
+
+                verticalH -= sh;
+
+                drawImage(g2d, image, x, y, sw, sh, dx, dy, dw, sh);
+
+                dy += sh;
+
+            }
+            while (verticalH > 0);
+        }
     }
     
     /**
