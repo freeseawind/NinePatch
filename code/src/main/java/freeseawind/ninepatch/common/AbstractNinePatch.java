@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import freeseawind.ninepatch.common.Row.Type;
+import freeseawind.ninepatch.common.Column.Type;
 
 /**
  * @author freeseawind@github
@@ -23,7 +23,7 @@ public abstract class AbstractNinePatch<T, E>
     private int patchHeight;
     private int horizontalPatchNum;
     private int verticalPatchNum;
-    private List<List<Row>> columns;
+    private List<List<Column>> columns;
     private Padding padding;
     private T image;
     private RepeatType repeatType;
@@ -54,15 +54,8 @@ public abstract class AbstractNinePatch<T, E>
      */
 	public void drawNinePatch(E g2d, int x, int y, int scaledWidth, int scaledHeight)
 	{
-	    // 图片实际宽度
-        int imageWidth = getImageWidth(image) - horizontalPatchNum - 1;
-        
-        // 图片实际高度
-        int imageHeight = getImageHeight(image) - verticalPatchNum - 1;
-	    
 		// 修复BUG防止拉伸大小小于等于原图大小
-        if (scaledWidth <= 1 || scaledHeight <= 1 || scaledWidth < imageWidth
-                || scaledHeight < imageHeight)
+        if (scaledWidth <= 1 || scaledHeight <= 1)
         {
             return;
         }
@@ -105,7 +98,7 @@ public abstract class AbstractNinePatch<T, E>
             int columnCount = 0;
 
             // 逐行绘制
-            for(List<Row> rows : columns)
+            for(List<Column> rows : columns)
             {
                 int rowCount = 0;
 
@@ -114,12 +107,24 @@ public abstract class AbstractNinePatch<T, E>
                 boolean isFirst = true;
 
                 int preRowHeight = 0;
+                
+                // 防止图片拉伸高度大于实际需要拉伸高度
+                if(startY > scaledHeight)
+                {
+                    break;
+                }
 
-                for(Row row : rows)
+                for(Column row : rows)
                 {
                     Rectangle rect = row.getRectangle();
 
                     int width = rect.width;
+                    
+                    // 防止图片拉伸宽度大于实际需要拉伸宽度
+                    if(startX > scaledWidth)
+                    {
+                        break;
+                    }
 
                     if(Type.HORIZONTALPATCH == row.getType() || Type.TILEPATCH == row.getType())
                     {
@@ -218,7 +223,7 @@ public abstract class AbstractNinePatch<T, E>
         }
     }
 
-    public List<List<Row>> countColumn(NinePatchRegion xRegions, NinePatchRegion yRegions)
+    public List<List<Column>> countColumn(NinePatchRegion xRegions, NinePatchRegion yRegions)
     {
         boolean isPatchY = false; // 当前是否处于拉伸区域
         int i = 0; // 固定区域起始索引
@@ -228,7 +233,7 @@ public abstract class AbstractNinePatch<T, E>
 
         Region yRegion = null; // 循环出口条件
 
-        List<List<Row>> columns = new LinkedList<List<Row>>();// 九宫格行集合
+        List<List<Column>> columns = new LinkedList<List<Column>>();// 九宫格行集合
 
         do
         {
@@ -263,7 +268,7 @@ public abstract class AbstractNinePatch<T, E>
      * @param isPatchY
      * @return 返回当前行
      */
-    public List<Row> countRow(Region yRegion, NinePatchRegion xRegions, boolean isPatchY)
+    public List<Column> countRow(Region yRegion, NinePatchRegion xRegions, boolean isPatchY)
     {
         boolean isPatchX = false;
         int i = 0;
@@ -273,7 +278,7 @@ public abstract class AbstractNinePatch<T, E>
 
         Region xRegion = null;
 
-        List<Row> column = new LinkedList<Row>();
+        List<Column> column = new LinkedList<Column>();
 
         do
         {
@@ -291,7 +296,7 @@ public abstract class AbstractNinePatch<T, E>
 
             if(xRegion != null)
             {
-                Row.Type rowType = getRowType(isPatchX, isPatchY);
+                Column.Type rowType = getRowType(isPatchX, isPatchY);
 
                 int height = yRegion.getEnd() - yRegion.getStart();
 
@@ -299,7 +304,7 @@ public abstract class AbstractNinePatch<T, E>
 
                 Rectangle rect = new Rectangle(xRegion.getStart() + 1, yRegion.getStart() + 1, width, height);
 
-                Row row = new Row(rect, rowType);
+                Column row = new Column(rect, rowType);
 
                 column.add(row);
             }
@@ -614,9 +619,9 @@ public abstract class AbstractNinePatch<T, E>
         boolean isFirst = true;
         boolean isNewColumn = true;
 
-        for(List<Row> rows : columns)
+        for(List<Column> rows : columns)
         {
-            for(Row row : rows)
+            for(Column row : rows)
             {
                 if(Type.FIX == row.getType() && isFirst)
                 {

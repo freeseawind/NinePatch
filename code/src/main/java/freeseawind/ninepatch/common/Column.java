@@ -7,12 +7,12 @@ import java.awt.Rectangle;
  * @author freeseawind@github
  *
  */
-public class Row implements Comparable<Row>
+public class Column implements Comparable<Column>
 {
     private Rectangle rect;
     private Type type;
 
-    public Row(Rectangle rect, Type type)
+    public Column(Rectangle rect, Type type)
     {
         super();
         this.rect = rect;
@@ -29,7 +29,7 @@ public class Row implements Comparable<Row>
         return type;
     }
 
-    public int compareTo(Row o)
+    public int compareTo(Column o)
     {
         return Integer.compare(getRectangle().x, o.getRectangle().x);
     }
