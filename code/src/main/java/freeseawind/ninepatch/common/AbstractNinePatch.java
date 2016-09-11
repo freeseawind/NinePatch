@@ -434,7 +434,7 @@ public abstract class AbstractNinePatch<T, E>
         {
             int hornaizeW = dw;
 
-            // Ë®Æ½À­Éì
+            // 
             do
             {
                 if (hornaizeW - sw < 0)

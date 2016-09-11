@@ -27,6 +27,28 @@ protected void paintComponent(Graphics g)
     np.drawNinePatch(g2d, 28, 28, 200, 200);
 }
 ```
+
+## 平铺使用示例
+
+```Java
+
+BufferedImage img = ImageIO.read(input);
+
+// 水平平铺           
+SwingNinePatch np = new SwingNinePatch(img, RepeatType.HORIZONTAL);
+
+Graphics2D g2d = (Graphics2D) g;
+
+np.drawNinePatch(g2d, 28, 28, w, h);
+
+```
+
 ## 运行效果
 ![](https://raw.githubusercontent.com/freeseawind/NinePatch/master/doc/images/3.png)
+
+![](https://raw.githubusercontent.com/freeseawind/NinePatch/master/doc/images/4.png)
+
+## 作者的其它项目
+
+* [littleluck](https://github.com/freeseawind/littleluck)-Java Swing跨平台外观(LookAndFeel)实现
 
