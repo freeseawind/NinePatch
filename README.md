@@ -48,6 +48,16 @@ np.drawNinePatch(g2d, 28, 28, w, h);
 
 ![](https://raw.githubusercontent.com/freeseawind/NinePatch/master/doc/images/4.png)
 
+## Getting NinePatch
+
+```xml
+<dependency>
+  <groupId>com.github.freeseawind</groupId>
+  <artifactId>NinePatch</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
 ## 作者的其它项目
 
 * [littleluck](https://github.com/freeseawind/littleluck)-Java Swing跨平台外观(LookAndFeel)实现

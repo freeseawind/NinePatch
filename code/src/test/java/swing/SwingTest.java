@@ -24,7 +24,7 @@ public class SwingTest
             {
                 try
                 {
-                	InputStream input = SwingTest.class.getResourceAsStream("/frame_shadow_border4.9.png");
+                	InputStream input = SwingTest.class.getResourceAsStream("/progressbar_cell.9.png");
                 	
                     final BufferedImage img = ImageIO.read(input);
 
